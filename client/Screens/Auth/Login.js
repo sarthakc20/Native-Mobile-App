@@ -1,16 +1,22 @@
 import { View, Text, StyleSheet, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import InputBox from "../../Components/Forms/InputBox";
 import SubmitButton from "../../Components/Forms/SubmitButton";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../../Context/authContext";
 
 const Login = ({ navigation }) => {
+  // global state
+  const [state, setState] = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Functions
   // Button functions
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       if (!email || !password) {
@@ -19,12 +25,32 @@ const Login = ({ navigation }) => {
         return;
       }
       setLoading(false);
+
+      const { data } = await axios.post(
+        "/auth/login",
+        { email, password }
+      );
+
+      setState(data);
+
+      await AsyncStorage.setItem("@auth", JSON.stringify(data));
+
+      alert(data && data.message);
+      navigation.navigate("Home");
+
       console.log("Login data --> ", { email, password });
     } catch (error) {
+      alert(error.response.data.message);
       setLoading(false);
       console.log(error);
     }
   };
+  // temp function to check local storage data
+  const getLocalStoredata = async () => {
+    let data = await AsyncStorage.getItem("@auth");
+    console.log("Local storage data ->", data);
+  };
+  getLocalStoredata();
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Login</Text>

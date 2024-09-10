@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import mImg from "./mountant.jpeg";
 
@@ -22,6 +22,8 @@ const HomePage = ({navigation}) => {
       <View style={styles.extra}>
       <Text onPress={() => navigation.navigate("Login")}>login</Text>
       <Text onPress={() => navigation.navigate("Signup")}>Signup</Text>
+      </View>
+      <View style={styles.extra}>
       </View>
     </ScrollView>
   );
