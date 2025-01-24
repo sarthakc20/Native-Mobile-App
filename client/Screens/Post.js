@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import FooterMenu from "../Components/Menus/FooterMenu";
 
-const About = () => {
+const Post = () => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default About;
+export default Post;

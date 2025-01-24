@@ -7,6 +7,9 @@ import Home from "../../Screens/Home";
 import HomePage from "../../Screens/HomePage";
 import { AuthContext } from "../../Context/authContext";
 import HeaderMenue from "./HeaderMenue";
+import Post from "../../Screens/Post";
+import About from "../../Screens/About";
+import Account from "../../Screens/Account";
 
 const ScreenMenu = () => {
   //global state
@@ -19,6 +22,18 @@ const ScreenMenu = () => {
         <>
           <Stack.Screen name="Home" component={Home} options={{
             title: "Native Full-Stack App",
+            headerRight: () => <HeaderMenue />,
+          }}/>
+          <Stack.Screen name="Post" component={Post} options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenue />,
+          }}/>
+          <Stack.Screen name="About" component={About} options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenue />,
+          }}/>
+          <Stack.Screen name="Account" component={Account} options={{
+            headerBackTitle: "Back",
             headerRight: () => <HeaderMenue />,
           }}/>
         </>
