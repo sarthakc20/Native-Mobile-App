@@ -47,7 +47,7 @@ const FooterMenu = () => {
 const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
-      margin: 15,
+      margin: 10,
       justifyContent: "space-between",
     },
     iconStyle: {

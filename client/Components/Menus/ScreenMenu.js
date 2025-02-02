@@ -10,6 +10,7 @@ import HeaderMenue from "./HeaderMenue";
 import Post from "../../Screens/Post";
 import About from "../../Screens/About";
 import Account from "../../Screens/Account";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const ScreenMenu = () => {
   //global state
@@ -20,22 +21,50 @@ const ScreenMenu = () => {
     <Stack.Navigator initialRouteName="Login">
       {authenticatedUser ? (
         <>
-          <Stack.Screen name="Home" component={Home} options={{
-            title: "Native Full-Stack App",
-            headerRight: () => <HeaderMenue />,
-          }}/>
-          <Stack.Screen name="Post" component={Post} options={{
-            headerBackTitle: "Back",
-            headerRight: () => <HeaderMenue />,
-          }}/>
-          <Stack.Screen name="About" component={About} options={{
-            headerBackTitle: "Back",
-            headerRight: () => <HeaderMenue />,
-          }}/>
-          <Stack.Screen name="Account" component={Account} options={{
-            headerBackTitle: "Back",
-            headerRight: () => <HeaderMenue />,
-          }}/>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerTitle: () => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <FontAwesome5
+                    name="pen-nib"
+                    size={20}
+                    color="orange"
+                    style={{ marginRight: 8, paddingTop: 2 }}
+                  />
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    Post Book
+                  </Text>
+                </View>
+              ),
+              headerRight: () => <HeaderMenue />,
+            }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={Post}
+            options={{
+              headerBackTitle: "Back",
+              headerRight: () => <HeaderMenue />,
+            }}
+          />
+          <Stack.Screen
+            name="About"
+            component={About}
+            options={{
+              headerBackTitle: "Back",
+              headerRight: () => <HeaderMenue />,
+            }}
+          />
+          <Stack.Screen
+            name="Account"
+            component={Account}
+            options={{
+              headerBackTitle: "Back",
+              headerRight: () => <HeaderMenue />,
+            }}
+          />
         </>
       ) : (
         <>

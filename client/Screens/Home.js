@@ -1,27 +1,31 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { AuthContext } from "../Context/authContext";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import FooterMenu from "../Components/Menus/FooterMenu";
-  
-  const Home = () => {
-    //global state
-    const [state] = useContext(AuthContext);
-    return (
-      <View style={styles.container}>
-        <Text>{JSON.stringify(state, null, 4)}</Text>
-        <View style={{ backgroundColor: "#ffffff" }}>
-          <FooterMenu />
-        </View>
+import { PostContext } from "../Context/postContext";
+import PostCard from "../Components/PostCard";
+
+const Home = () => {
+  //global state
+  const [posts] = useContext(PostContext);
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <PostCard posts={posts}/>
+      </ScrollView>
+
+      <View>
+        <FooterMenu />
       </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: 10,
-      justifyContent: "space-between",
-    },
-  });
-  
-  export default Home;
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 15,
+    justifyContent: "space-between",
+  },
+});
+
+export default Home;
