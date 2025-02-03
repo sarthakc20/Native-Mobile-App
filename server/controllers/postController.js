@@ -54,4 +54,27 @@ const getPostController = async (req, res) => {
   }
 };
 
-module.exports = { createPostController, getPostController };
+// Get user posts
+const getUserPostController = async (req, res) => {
+  try {
+    const userPosts = await postModel.find({ postedBy: req.auth._id });
+    res.status(200).send({
+      success: true,
+      message: "User posts successfully retrieved",
+      userPosts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error while getting user posts",
+      error,
+    });
+  }
+};
+
+module.exports = {
+  createPostController,
+  getPostController,
+  getUserPostController,
+};

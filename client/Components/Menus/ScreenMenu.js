@@ -11,6 +11,7 @@ import Post from "../../Screens/Post";
 import About from "../../Screens/About";
 import Account from "../../Screens/Account";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MyPost from "../../Screens/MyPost";
 
 const ScreenMenu = () => {
   //global state
@@ -45,6 +46,15 @@ const ScreenMenu = () => {
             name="Post"
             component={Post}
             options={{
+              headerBackTitle: "Back",
+              headerRight: () => <HeaderMenue />,
+            }}
+          />
+          <Stack.Screen
+            name="MyPost"
+            component={MyPost}
+            options={{
+              title: "My Posts",
               headerBackTitle: "Back",
               headerRight: () => <HeaderMenue />,
             }}

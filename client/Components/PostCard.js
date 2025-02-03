@@ -5,7 +5,9 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 const PostCard = ({ posts }) => {
   return (
     <View>
-      <Text style={styles.heading}>Total Posts {posts?.length}</Text>
+      <Text style={styles.heading}>
+      {`Total Post${posts?.length > 1 ? 's' : ''}: ${posts?.length}`}
+      </Text>
       {posts?.map((post, index) => (
         <View key={index} style={styles.card}>
           <View>
@@ -13,8 +15,20 @@ const PostCard = ({ posts }) => {
             <Text style={styles.desc}>{post?.description}</Text>
           </View>
           <View style={styles.footer}>
-            <Text style={styles.postedByName}><FontAwesome5 name="user-alt" color={"orange"} />  {post?.postedBy?.name}</Text>
-            <Text style={{ paddingTop: 5 }}><FontAwesome5 name="calendar-alt" color={"orange"} /> {String(post?.createdAt).substring(0, 10)}</Text>
+            {post?.postedBy?.name ? (
+              <Text style={styles.postedByName}>
+                <FontAwesome5 name="user-alt" color={"orange"} />{" "}
+                {post?.postedBy?.name}
+              </Text>
+            ) : (
+              <Text style={styles.postedByName}>
+                <FontAwesome5 name="user-alt" color={"orange"} /> My Post
+              </Text>
+            )}
+            <Text style={{ paddingTop: 5 }}>
+              <FontAwesome5 name="calendar-alt" color={"orange"} />{" "}
+              {String(post?.createdAt).substring(0, 10)}
+            </Text>
           </View>
         </View>
       ))}
@@ -35,10 +49,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 5,
     marginVertical: 10,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: {
-        width: 0,
-        height: 4,
+      width: 0,
+      height: 4,
     },
     shadowOpacity: 0.3,
     shadowRadius: 40,
@@ -57,13 +71,13 @@ const styles = StyleSheet.create({
   desc: {
     marginTop: 10,
   },
-  postedByName :{
+  postedByName: {
     paddingHorizontal: 8,
     paddingVertical: 5,
     backgroundColor: "#ffdbbb",
     borderRadius: 15,
     verticalAlign: "middle",
-  }
+  },
 });
 
 export default PostCard;
