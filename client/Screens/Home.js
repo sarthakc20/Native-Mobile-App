@@ -1,5 +1,12 @@
-import React, { useContext } from "react";
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+} from "react-native";
 import FooterMenu from "../Components/Menus/FooterMenu";
 import { PostContext } from "../Context/postContext";
 import PostCard from "../Components/PostCard";
@@ -10,8 +17,20 @@ import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
   //global state
-  const [posts] = useContext(PostContext);
+  const [posts, getPosts] = useContext(PostContext);
   const [state, setState] = useContext(AuthContext);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {}, [getPosts]);
+
+  // refresh controll
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getPosts;
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const navigation = useNavigation();
   const getGreeting = () => {
@@ -26,9 +45,13 @@ const Home = () => {
   const greeting = getGreeting();
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <LinearGradient
-          colors={['#000000', '#000000', '#FFA500']}  // Dominant black, small orange section
+          colors={["#000000", "#000000", "#FFA500"]} // Dominant black, small orange section
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.banner}

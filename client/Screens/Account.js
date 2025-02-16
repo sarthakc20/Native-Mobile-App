@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,17 +13,32 @@ import FooterMenu from "../Components/Menus/FooterMenu";
 import axios from "axios";
 
 const Account = () => {
-  //global state
+  // Global state
   const [state, setState] = useContext(AuthContext);
   const { user, token } = state;
-  //local state
+
+  // Local state
   const [name, setName] = useState(user?.name);
   const [password, setPassword] = useState(user?.password);
   const [email] = useState(user?.email);
   const [loading, setLoading] = useState(false);
 
+  // Track if there are any changes
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  // Check for changes in the fields
+  useEffect(() => {
+    if (name !== user?.name || password !== user?.password) {
+      setIsUpdated(true);
+    } else {
+      setIsUpdated(false);
+    }
+  }, [name, password]);
+
   // Update user data
   const handleUpdate = async () => {
+    if (!isUpdated) return; // Do not proceed if no changes
+
     try {
       setLoading(true);
       const { data } = await axios.put("/auth/update-user", {
@@ -41,6 +56,7 @@ const Account = () => {
       console.log(error);
     }
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -90,7 +106,14 @@ const Account = () => {
         </View>
 
         <View style={{ alignItems: "center" }}>
-          <TouchableOpacity style={styles.updateBtn} onPress={handleUpdate}>
+          <TouchableOpacity
+            style={[
+              styles.updateBtn,
+              { backgroundColor: isUpdated ? "black" : "#ccc" },
+            ]} // Disable the button if no changes
+            onPress={handleUpdate}
+            disabled={!isUpdated} // Disable if no changes
+          >
             <Text style={styles.updateBtnText}>
               {loading ? "Please wait" : "Update profile"}
             </Text>
@@ -135,8 +158,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   updateBtn: {
-    backgroundColor: "black",
-    color: "white",
     height: 40,
     width: 250,
     borderRadius: 10,

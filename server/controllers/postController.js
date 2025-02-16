@@ -1,3 +1,4 @@
+const { response } = require("express");
 const postModel = require("../models/postModel");
 
 //Create post
@@ -73,8 +74,70 @@ const getUserPostController = async (req, res) => {
   }
 };
 
+// Delete post
+const deletePostController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await postModel.findByIdAndDelete({ _id: id });
+    res.status(200).send({
+      success: true,
+      message: "Post successfully deleted",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error while deleting post",
+      error,
+    });
+  }
+};
+
+// Update post
+const updatePostController = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    // post find
+    const post = await postModel.findById({ _id: req.params.id });
+
+    // validation
+    if (!title || !description) {
+      return res.status(500).send({
+        sucess: false,
+        message: "Please provide title and description",
+      });
+    }
+
+    const updatePost = await postModel.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      {
+        title: title || post?.title,
+        description: description || post?.description,
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      message: "Post successfully updated",
+      updatePost,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error while updating post",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createPostController,
   getPostController,
   getUserPostController,
+  deletePostController,
+  updatePostController,
 };

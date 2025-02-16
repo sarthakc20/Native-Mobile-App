@@ -11,6 +11,7 @@ import FooterMenu from "../Components/Menus/FooterMenu";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import Loader from "../Components/Loader/Loader";
 
 const MyPost = () => {
   //State
@@ -40,9 +41,11 @@ const MyPost = () => {
 
   return (
     <View style={styles.container}>
-      {posts && posts.length > 0 ? (
+      {loading ? (
+        <Loader count={posts && posts.length || 2} />
+      ) : posts && posts.length > 0 ? (
         <ScrollView>
-          <PostCard posts={posts} />
+          <PostCard posts={posts} myPostScreen={true} />
         </ScrollView>
       ) : (
         <View style={styles.noPostContainer}>
