@@ -14,23 +14,27 @@ import { AuthContext } from "../Context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
+import Loader from "../Components/Loader/Loader";
 
 const Home = () => {
   //global state
-  const [posts, getPosts] = useContext(PostContext);
+  const [posts, setPosts, getPosts] = useContext(PostContext);
   const [state, setState] = useContext(AuthContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {}, [getPosts]);
+  useEffect(() => {
+    getPosts(); // Fetch posts on component mount
+  }, []);
 
   // refresh controll
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getPosts;
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+    getPosts().then(() =>
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 1000)
+    ); // Ensure posts load before stopping refresh
+  }, [getPosts]);
 
   const navigation = useNavigation();
   const getGreeting = () => {
@@ -76,7 +80,11 @@ const Home = () => {
             {greeting} {firstName}!
           </Text>
         </View>
-        <PostCard posts={posts} />
+        {refreshing ? (
+          <Loader count={(posts && posts.length) || 3} />
+        ) : (
+          <PostCard posts={posts} />
+        )}
       </ScrollView>
 
       <View>

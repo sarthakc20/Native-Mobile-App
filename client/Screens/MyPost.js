@@ -42,7 +42,7 @@ const MyPost = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader count={posts && posts.length || 2} />
+        <Loader count={posts && posts.length || 3} />
       ) : posts && posts.length > 0 ? (
         <ScrollView>
           <PostCard posts={posts} myPostScreen={true} />
